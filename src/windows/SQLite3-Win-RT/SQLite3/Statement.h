@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sqlite3.h"
+#include <string>
 
 namespace SQLite3
 {
@@ -22,6 +23,7 @@ namespace SQLite3
     int ColumnInt(int index);
     long long ColumnInt64(int index);
     double ColumnDouble(int index);
+	Platform::String^ ColumnBlob(int index);
 
     int BindText(int index, Platform::String^ val);
     int BindInt(int index, int val);

@@ -2,6 +2,8 @@
 
 #include "Statement.h"
 #include "Database.h"
+#include <string>
+#include "base64.h"
 
 namespace SQLite3
 {
@@ -62,6 +64,28 @@ namespace SQLite3
   {
     return sqlite3_column_double(statement, index);
   }
+
+  Platform::String^ Statement::ColumnBlob(int index)
+  {
+	  //return sqlite3_column_blob(statement, index);
+	  
+	  uint8* blob = (uint8*)sqlite3_column_blob(statement, index);
+	  const int blobSize = sqlite3_column_bytes(statement, index);
+
+	  std::string encoded = base64_encode(blob, blobSize);
+
+	  
+	  std::wstring str(encoded.begin(), encoded.end());
+
+	  //std::wstring str = std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes("some string");
+
+	  return ref new Platform::String(str.c_str());
+	  //Platform::ArrayReference<uint8> blobArray(blob, blobSize);
+	  //using Windows::Security::Cryptography::CryptographicBuffer;
+	  //auto base64Text = CryptographicBuffer::EncodeToBase64String(CryptographicBuffer::CreateFromByteArray(blobArray));
+	  //outstream << L'"' << base64Text->Data() << L'"';	  
+  }
+  
 
   int Statement::BindText(int index, Platform::String^ val)
   {

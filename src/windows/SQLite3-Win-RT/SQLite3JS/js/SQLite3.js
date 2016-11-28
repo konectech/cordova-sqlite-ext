@@ -112,10 +112,12 @@
           return this.statement.columnDouble(index);
         case SQLite3.Datatype.text:
           return this.statement.columnText(index);
+        case SQLite3.Datatype.blob:
+          return this.statement.columnBlob(index);
         case SQLite3.Datatype["null"]:
           return null;
         default:
-          throw new Error('Unsupported column type in column ' + index);
+          throw new Error('Unsupported column type in column ' + index + ". Column type: " + this.statement.columnType(index));
       }
     }
   });
